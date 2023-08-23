@@ -3,7 +3,6 @@ kind: Kustomization
 metadata:
   name: myapp1
   namespace: myapp
-namePrefix: sync-phases-
 resources:
 - ./deployment.yaml
 - ./service.yaml
