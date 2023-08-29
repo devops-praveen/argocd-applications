@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service12
+  namespace: myapp
+spec:
+  selector:
+    app: myapp12
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  
