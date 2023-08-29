@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: kustomize-and-conftest
-          image: praveen888/opa:v33
+          image: praveen888/opa:v3
           command: ["/bin/sh", "-c"]
           args: ["git clone https://github.com/devops-praveen/argocd-applications.git  && kubectl kustomize argocd-applications/dev > argocd-applications/dev/raw.yaml && conftest test -p test.rego argocd-applications/dev/raw.yaml"]
           env:

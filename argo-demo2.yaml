@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: data-product-delivery
+  namespace: argocd
+spec:
+  project: default
+  source: 
+    path: app
+    repoURL: "https://github.com/devops-praveen/sync-phases.git"
+    targetRevision: HEAD
+    directory:
+      recurse: true
+  destination:
+    namespace: vehicle-lifecycle
+    server: "https://kubernetes.default.svc"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=false
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+
