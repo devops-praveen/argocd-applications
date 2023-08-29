@@ -13,3 +13,4 @@ images:
   newTag: latest
 resources:
 - ../base
+- ./pre-sync.yaml
