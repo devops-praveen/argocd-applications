@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-product-delivery-deployment
+  namespace: vehicle-lifecycle
+spec:
+  template:
+    spec:
+      volumes:
+
