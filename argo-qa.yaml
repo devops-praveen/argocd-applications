@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    path: dev
+    path: qa
     repoURL: https://github.com/devops-praveen/argocd-applications.git
     targetRevision: HEAD
     directory:
