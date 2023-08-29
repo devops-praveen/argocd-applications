@@ -8,9 +8,8 @@ patchesStrategicMerge:
 - ./deployment-volumes.yaml
 - ./deployment-server-port.yaml
 - ./deployment-sa.yaml
-- ./pre-sync.yaml
 images:
-- name: 557068259488.dkr.ecr.eu-west-2.amazonaws.com/vlc-data-product-delivery
-  newTag: 74cfbe8294be62dde738a73683e875113c8ad4c0
+- name: nginx
+  newTag: latest
 resources:
 - ../base
