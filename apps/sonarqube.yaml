@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarqube
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: sonarqube
+  source:
+    repoURL: https://SonarSource.github.io/helm-chart-sonarqube
+    targetRevision: 2.0.7+289
+    chart: sonarqube
+    helm:
+      values: |
+        edition: "developer"
+        image:
+          repository: sonarqube
+          tag: 9.3.0-{{ .Values.edition }}
+          pullPolicy: IfNotPresent
+        ingress:
+          enabled: true
+          hosts:
+            - name: 
+              path: /*
+          annotations:
+            kubernetes.io/ingress.class: alb
+            nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+            alb.ingress.kubernetes.io/target-type: 'ip'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]' 
+        plugins:
+          install:
+            - "https://github.com/porscheinformatik/sonarqube-licensecheck/releases/download/v5.0.1/sonarqube-licensecheck-plugin-5.0.1.jar"
+            - "https://github.com/CreditMutuelArkea/sonar-apigee-plugin/releases/download/v3.0.1/sonar-apigee-plugin-3.0.1.jar"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sonarqube
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=false
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+
