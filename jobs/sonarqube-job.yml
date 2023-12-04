@@ -25,5 +25,5 @@ spec:
           env:
             - name: GIT_TERMINAL_PROMPT
               value: "0"  # To avoid interactive prompts during git clone
-      restartPolicy: OnSucceded
+      restartPolicy: OnFailure
   backoffLimit: 0
