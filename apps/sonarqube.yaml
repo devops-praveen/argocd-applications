@@ -9,14 +9,14 @@ spec:
   project: sonarqube
   source:
     repoURL: https://SonarSource.github.io/helm-chart-sonarqube
-    targetRevision: 2.0.7+289
+    targetRevision: 8.0.3+2010
     chart: sonarqube
     helm:
       values: |
         edition: "developer"
         image:
           repository: sonarqube
-          tag: 9.3.0-{{ .Values.edition }}
+          tag: 9.9.3-{{ .Values.edition }}
           pullPolicy: IfNotPresent
         ingress:
           enabled: true
@@ -30,10 +30,23 @@ spec:
             alb.ingress.kubernetes.io/target-type: 'ip'
             alb.ingress.kubernetes.io/ssl-redirect: '443'
             alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]' 
+        serviceAccount:
+          create: true
+          name: sonarqube
+          annotations: 
+            eks.amazonaws.com/role-arn: 
+        postgresql:
+          enabled: false
+          postgresqlServer: 
+          postgresqlUsername: "sonarUser"
+          existingSecret: sonarqube-db-pw
+          postgresqlDatabase: "sonarDB"
+          service:
+            port: 5432
         plugins:
           install:
-            - "https://github.com/porscheinformatik/sonarqube-licensecheck/releases/download/v5.0.1/sonarqube-licensecheck-plugin-5.0.1.jar"
-            - "https://github.com/CreditMutuelArkea/sonar-apigee-plugin/releases/download/v3.0.1/sonar-apigee-plugin-3.0.1.jar"
+            - "https://github.com/porscheinformatik/sonarqube-licensecheck/releases/download/v6.0.0-beta-2/sonarqube-licensecheck-plugin-6.0.0-beta-2.jar"
+            - "https://github.com/CreditMutuelArkea/sonar-apigee-plugin/releases/download/v3.0.2/sonar-apigee-plugin-3.0.2.jar"
 
   destination:
     server: https://kubernetes.default.svc
@@ -56,4 +69,3 @@ spec:
       kind: Deployment
       jsonPointers:
         - /spec/replicas
-
