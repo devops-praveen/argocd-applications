@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: job-testing
+  namespace: argocd
+spec:
+  project: default
+  source:
+    path: apps
+    repoURL: https://github.com/devops-praveen/argocd-applications.git
+    targetRevision: HEAD
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sonarqube
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=false
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
