@@ -20,6 +20,7 @@ spec:
                 git clone https://github.com/devops-praveen/argocd-applications.git
                 python3 values.py --source-path argocd-applications/apps/sonarqube.yaml > sonarqubevalues.yml
                 helm repo add https://SonarSource.github.io/helm-chart-sonarqube
+                helm repo ls
                 helm template sonarqube sonarqube/sonarqube --values sonarqubevalues.yml > renderedsonar.yml
                 conftest test -p test.rego renderedsonar.yml
           env:
