@@ -21,6 +21,8 @@ spec:
                 python3 values.py --source-path argocd-applications/apps/sonarqube.yaml > sonarqubevalues.yml
                 helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
                 cat sonarqubevalues.yml
+                helm version 
+                kubectl version
                 helm template sonarqube sonarqube/sonarqube --values sonarqubevalues.yml > renderedsonar.yml
                 conftest test -p test.rego renderedsonar.yml
           env:
