@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: test-container
-          image: praveen888/opa:v7
+          image: praveen888/opa:v8
           command: ["/bin/sh", "-c"]
           #args: ["cd /app && git clone https://github.com/devops-praveen/sync-phases.git  && kubectl kustomize sync-phases/app > sync-phases/app/output1.yaml && conftest test -p app/test.rego sync-phases/app/output1.yaml"]
           args:
