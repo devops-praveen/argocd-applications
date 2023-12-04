@@ -4,4 +4,4 @@ metadata:
   name: test-job
   namespace: sonarqube
 resources:
-- ./sonarqube-job.yml
+- ./sonarqube.yml
