@@ -5,7 +5,7 @@ metadata:
   namespace: sonarqube
   annotations:
     argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    #argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 600
   template:
@@ -25,5 +25,5 @@ spec:
           env:
             - name: GIT_TERMINAL_PROMPT
               value: "0"  # To avoid interactive prompts during git clone
-      restartPolicy: OnFailure
+      restartPolicy: Never
   backoffLimit: 0
