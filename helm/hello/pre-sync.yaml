@@ -1,29 +1,30 @@
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: test-job-2
-  namespace: sonarqube
-  annotations:
-    argocd.argoproj.io/hook: PreSync
-    #argocd.argoproj.io/hook-delete-policy: HookSucceeded
-spec:
-  ttlSecondsAfterFinished: 600
-  template:
-    spec:
-      containers:
-        - name: test-container
-          image: praveen888/opa:v11
-          command: ["/bin/sh", "-c"]
-          #args: ["cd /app && git clone https://github.com/devops-praveen/sync-phases.git  && kubectl kustomize sync-phases/app > sync-phases/app/output1.yaml && conftest test -p app/test.rego sync-phases/app/output1.yaml"]
-          args:
-              - |
-                git clone https://github.com/devops-praveen/argocd-applications.git
-                python3 values.py --source-path argocd-applications/apps/sonarqube.yaml > sonarqubevalues.yml
-                helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
-                helm template sonarqube sonarqube/sonarqube --values sonarqubevalues.yml > renderedsonar.yml
-                conftest test -p test.rego renderedsonar.yml
-          env:
-            - name: GIT_TERMINAL_PROMPT
-              value: "0"  # To avoid interactive prompts during git clone
-      restartPolicy: Never
-  backoffLimit: 0
+helm: |
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: test-job-2
+    namespace: sonarqube
+    annotations:
+      argocd.argoproj.io/hook: PreSync
+      #argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  spec:
+    ttlSecondsAfterFinished: 600
+    template:
+      spec:
+        containers:
+          - name: test-container
+            image: praveen888/opa:v11
+            command: ["/bin/sh", "-c"]
+            #args: ["cd /app && git clone https://github.com/devops-praveen/sync-phases.git  && kubectl kustomize sync-phases/app > sync-phases/app/output1.yaml && conftest test -p app/test.rego sync-phases/app/output1.yaml"]
+            args:
+                - |
+                  git clone https://github.com/devops-praveen/argocd-applications.git
+                  python3 values.py --source-path argocd-applications/apps/sonarqube.yaml > sonarqubevalues.yml
+                  helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
+                  helm template sonarqube sonarqube/sonarqube --values sonarqubevalues.yml > renderedsonar.yml
+                  conftest test -p test.rego renderedsonar.yml
+            env:
+              - name: GIT_TERMINAL_PROMPT
+                value: "0"  # To avoid interactive prompts during git clone
+        restartPolicy: Never
+    backoffLimit: 0
